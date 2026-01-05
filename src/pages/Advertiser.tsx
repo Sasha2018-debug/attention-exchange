@@ -3,6 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Slider } from "@/components/ui/slider";
+import { useLanguage } from "@/contexts/LanguageContext";
 import {
   Eye,
   TrendingUp,
@@ -11,10 +12,6 @@ import {
   Lightbulb,
   BarChart3,
   Calendar,
-  Clock,
-  DollarSign,
-  Users,
-  CheckCircle,
   Settings,
   Download,
   Play,
@@ -73,35 +70,43 @@ const campaigns = [
   },
 ];
 
-const recommendations = [
-  {
-    type: "optimize",
-    title: "Оптимизация длительности",
-    description: "30s attention показывает лучший ROI для вашей категории. Рекомендуем увеличить долю.",
-    impact: "+15% эффективность",
-  },
-  {
-    type: "warning",
-    title: "Дефицит Tier-1 supply",
-    description: "Premium Human продукт недоступен. Tier-1 воркеры: 0. ETA: неизвестно.",
-    impact: "Альтернатива: Tier-2",
-  },
-  {
-    type: "geo",
-    title: "GEO расширение",
-    description: "DACH регион показывает высокий confidence (87%). Рекомендуем добавить.",
-    impact: "+23% reach",
-  },
-];
-
-const contracts = [
-  { period: "1 мес", discount: "0%", price: "$2,000", selected: false },
-  { period: "3 мес", discount: "5%", price: "$5,700", selected: false },
-  { period: "6 мес", discount: "10%", price: "$10,800", selected: true },
-  { period: "12 мес", discount: "15%", price: "$20,400", selected: false },
-];
-
 const Advertiser = () => {
+  const { t, language } = useLanguage();
+
+  const recommendations = [
+    {
+      type: "optimize",
+      title: language === "ru" ? "Оптимизация длительности" : "Duration Optimization",
+      description: language === "ru" 
+        ? "30s attention показывает лучший ROI для вашей категории. Рекомендуем увеличить долю."
+        : "30s attention shows best ROI for your category. Recommend increasing share.",
+      impact: "+15%",
+    },
+    {
+      type: "warning",
+      title: language === "ru" ? "Дефицит Tier-1 supply" : "Tier-1 Supply Deficit",
+      description: language === "ru"
+        ? "Premium Human продукт недоступен. Tier-1 воркеры: 0. ETA: неизвестно."
+        : "Premium Human product unavailable. Tier-1 workers: 0. ETA: unknown.",
+      impact: "Tier-2 alt",
+    },
+    {
+      type: "geo",
+      title: language === "ru" ? "GEO расширение" : "GEO Expansion",
+      description: language === "ru"
+        ? "DACH регион показывает высокий confidence (87%). Рекомендуем добавить."
+        : "DACH region shows high confidence (87%). Recommend adding.",
+      impact: "+23% reach",
+    },
+  ];
+
+  const contracts = [
+    { period: language === "ru" ? "1 мес" : "1 mo", discount: "0%", price: "$2,000", selected: false },
+    { period: language === "ru" ? "3 мес" : "3 mo", discount: "5%", price: "$5,700", selected: false },
+    { period: language === "ru" ? "6 мес" : "6 mo", discount: "10%", price: "$10,800", selected: true },
+    { period: language === "ru" ? "12 мес" : "12 mo", discount: "15%", price: "$20,400", selected: false },
+  ];
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -111,21 +116,21 @@ const Advertiser = () => {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-2xl font-bold">Advertiser Dashboard</h1>
+              <h1 className="text-2xl font-bold">{t("advertiser.title")}</h1>
               <Badge variant="default">PRO</Badge>
             </div>
             <p className="text-sm text-muted-foreground">
-              Настройка кампаний • AI-рекомендации • Прозрачная отчётность
+              {t("advertiser.subtitle")}
             </p>
           </div>
           <div className="flex gap-2">
             <Button variant="outline">
               <Download className="w-4 h-4 mr-2" />
-              Экспорт
+              {t("advertiser.export")}
             </Button>
             <Button className="btn-3d">
               <Play className="w-4 h-4 mr-2" />
-              Новая кампания
+              {t("advertiser.new.campaign")}
             </Button>
           </div>
         </div>
@@ -135,7 +140,7 @@ const Advertiser = () => {
           <div className="dashboard-panel">
             <div className="flex items-center gap-2 mb-2">
               <BarChart3 className="w-4 h-4 text-primary" />
-              <span className="text-xs text-muted-foreground uppercase">Активные кампании</span>
+              <span className="text-xs text-muted-foreground uppercase">{t("advertiser.active.campaigns")}</span>
             </div>
             <div className="text-3xl font-mono font-bold">{advertiserData.activeCampaigns}</div>
           </div>
@@ -143,16 +148,16 @@ const Advertiser = () => {
           <div className="dashboard-panel">
             <div className="flex items-center gap-2 mb-2">
               <Eye className="w-4 h-4 text-accent" />
-              <span className="text-xs text-muted-foreground uppercase">Доставлено внимания</span>
+              <span className="text-xs text-muted-foreground uppercase">{t("advertiser.attention.delivered")}</span>
             </div>
             <div className="text-3xl font-mono font-bold">{advertiserData.totalAttention.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground mt-1">секунд</p>
+            <p className="text-xs text-muted-foreground mt-1">{t("advertiser.seconds")}</p>
           </div>
 
           <div className="dashboard-panel">
             <div className="flex items-center gap-2 mb-2">
               <TrendingUp className="w-4 h-4 text-success" />
-              <span className="text-xs text-muted-foreground uppercase">Avg Trust Score</span>
+              <span className="text-xs text-muted-foreground uppercase">{t("advertiser.avg.trust")}</span>
             </div>
             <div className="text-3xl font-mono font-bold text-success">{advertiserData.avgTrustScore}</div>
           </div>
@@ -160,12 +165,12 @@ const Advertiser = () => {
           <div className="dashboard-panel">
             <div className="flex items-center gap-2 mb-2">
               <Globe className="w-4 h-4 text-warning" />
-              <span className="text-xs text-muted-foreground uppercase">GEO Confidence</span>
+              <span className="text-xs text-muted-foreground uppercase">{t("advertiser.geo.confidence")}</span>
             </div>
             <div className="flex items-center gap-2 mt-2">
               <div className="flex-1">
                 <div className="flex justify-between text-xs mb-1">
-                  <span className="text-success">High</span>
+                  <span className="text-success">{t("advertiser.high")}</span>
                   <span>{advertiserData.geoConfidence.high}%</span>
                 </div>
                 <Progress value={advertiserData.geoConfidence.high} className="h-1.5" />
@@ -180,10 +185,10 @@ const Advertiser = () => {
             {/* Campaign Settings */}
             <div className="dashboard-panel">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="font-semibold text-lg">Настройка кампании</h2>
+                <h2 className="font-semibold text-lg">{t("advertiser.campaign.settings")}</h2>
                 <Badge variant="outline">
                   <Settings className="w-3 h-3 mr-1" />
-                  Расширенный режим
+                  {t("advertiser.advanced.mode")}
                 </Badge>
               </div>
 
@@ -191,7 +196,7 @@ const Advertiser = () => {
                 <div className="space-y-4">
                   <div>
                     <label className="text-sm font-medium mb-3 block">
-                      Длительность внимания: <span className="text-primary font-mono">45s</span>
+                      {t("advertiser.attention.duration")}: <span className="text-primary font-mono">45s</span>
                     </label>
                     <Slider defaultValue={[45]} max={120} min={15} step={15} />
                     <div className="flex justify-between text-xs text-muted-foreground mt-1">
@@ -202,19 +207,19 @@ const Advertiser = () => {
 
                   <div>
                     <label className="text-sm font-medium mb-3 block">
-                      Интервал показов: <span className="text-primary font-mono">24ч</span>
+                      {t("advertiser.show.interval")}: <span className="text-primary font-mono">24h</span>
                     </label>
                     <Slider defaultValue={[24]} max={72} min={12} step={12} />
                     <div className="flex justify-between text-xs text-muted-foreground mt-1">
-                      <span>12ч</span>
-                      <span>72ч</span>
+                      <span>12h</span>
+                      <span>72h</span>
                     </div>
                   </div>
                 </div>
 
                 <div className="space-y-4">
                   <div>
-                    <label className="text-sm font-medium mb-2 block">GEO фильтры</label>
+                    <label className="text-sm font-medium mb-2 block">{t("advertiser.geo.filters")}</label>
                     <div className="flex flex-wrap gap-2">
                       {["US", "EU", "DACH", "UK", "Global"].map((geo) => (
                         <Badge
@@ -229,7 +234,7 @@ const Advertiser = () => {
                   </div>
 
                   <div>
-                    <label className="text-sm font-medium mb-2 block">Tier аудитории</label>
+                    <label className="text-sm font-medium mb-2 block">{t("advertiser.audience.tier")}</label>
                     <div className="flex gap-2">
                       {[1, 2, 3, 4].map((tier) => (
                         <Badge
@@ -250,8 +255,8 @@ const Advertiser = () => {
             {/* Campaigns Table */}
             <div className="dashboard-panel">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="font-semibold text-lg">Активные кампании</h2>
-                <Badge variant="outline">{campaigns.length} всего</Badge>
+                <h2 className="font-semibold text-lg">{t("advertiser.active.campaigns.list")}</h2>
+                <Badge variant="outline">{campaigns.length} {t("advertiser.total")}</Badge>
               </div>
 
               <div className="space-y-4">
@@ -285,7 +290,7 @@ const Advertiser = () => {
 
                     <div className="grid grid-cols-4 gap-4 text-sm">
                       <div>
-                        <p className="text-muted-foreground text-xs">Прогресс</p>
+                        <p className="text-muted-foreground text-xs">{t("advertiser.progress")}</p>
                         <div className="flex items-center gap-2 mt-1">
                           <Progress value={(campaign.delivered / campaign.target) * 100} className="h-1.5 flex-1" />
                           <span className="font-mono text-xs">
@@ -320,7 +325,7 @@ const Advertiser = () => {
             <div className="dashboard-panel">
               <div className="flex items-center gap-2 mb-4">
                 <Lightbulb className="w-5 h-5 text-accent" />
-                <h2 className="font-semibold">AI Рекомендации</h2>
+                <h2 className="font-semibold">{t("advertiser.ai.recommendations")}</h2>
               </div>
 
               <div className="space-y-3">
@@ -353,10 +358,10 @@ const Advertiser = () => {
             {/* Contracts */}
             <div className="dashboard-panel">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="font-semibold">Контракты</h2>
+                <h2 className="font-semibold">{t("advertiser.contracts")}</h2>
                 <Badge variant="outline">
                   <Calendar className="w-3 h-3 mr-1" />
-                  6 мес активен
+                  6 {language === "ru" ? "мес" : "mo"} {t("advertiser.active")}
                 </Badge>
               </div>
 
@@ -372,12 +377,12 @@ const Advertiser = () => {
                   >
                     <div>
                       <p className="font-medium">{contract.period}</p>
-                      <p className="text-xs text-muted-foreground">Скидка: {contract.discount}</p>
+                      <p className="text-xs text-muted-foreground">{t("advertiser.discount")}: {contract.discount}</p>
                     </div>
                     <div className="text-right">
                       <p className="font-mono font-semibold">{contract.price}</p>
                       {contract.selected && (
-                        <Badge variant="default" className="text-xs mt-1">Активен</Badge>
+                        <Badge variant="default" className="text-xs mt-1">{t("advertiser.active")}</Badge>
                       )}
                     </div>
                   </div>
@@ -386,11 +391,11 @@ const Advertiser = () => {
 
               <div className="mt-4 p-3 rounded-lg bg-secondary/50">
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Использовано</span>
+                  <span className="text-muted-foreground">{t("advertiser.used")}</span>
                   <span className="font-mono">${advertiserData.spent.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-sm mt-1">
-                  <span className="text-muted-foreground">Остаток</span>
+                  <span className="text-muted-foreground">{t("advertiser.remaining")}</span>
                   <span className="font-mono text-success">${advertiserData.remaining.toFixed(2)}</span>
                 </div>
                 <Progress value={(advertiserData.spent / (advertiserData.spent + advertiserData.remaining)) * 100} className="h-1.5 mt-2" />
@@ -401,10 +406,10 @@ const Advertiser = () => {
             <div className="dashboard-panel border-warning/30 bg-warning/5">
               <div className="flex items-center gap-2 mb-2">
                 <AlertTriangle className="w-5 h-5 text-warning" />
-                <h3 className="font-semibold text-warning">Предупреждение</h3>
+                <h3 className="font-semibold text-warning">{t("advertiser.warning")}</h3>
               </div>
               <p className="text-sm text-muted-foreground">
-                Tier-1 supply недоступен. Premium Human продукт заблокирован до появления Tier-1 воркеров.
+                {t("advertiser.supply.warning")}
               </p>
             </div>
           </div>

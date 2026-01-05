@@ -6,6 +6,7 @@ import { Hero3D } from "@/components/Hero3D";
 import { ValueCard } from "@/components/ValueCard";
 import { LiveStats } from "@/components/LiveStats";
 import { HowItWorks } from "@/components/HowItWorks";
+import { useLanguage } from "@/contexts/LanguageContext";
 import {
   Eye,
   Shield,
@@ -13,15 +14,15 @@ import {
   TrendingUp,
   ArrowRight,
   Signal,
-  CheckCircle,
-  Globe,
   Lock,
-  Zap,
+  Globe,
   LayoutDashboard,
   FileText,
 } from "lucide-react";
 
 const Index = () => {
+  const { t } = useLanguage();
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -38,32 +39,32 @@ const Index = () => {
                 <span className="text-xs font-mono text-success">LIVE</span>
               </div>
               <span className="text-sm text-muted-foreground">
-                Stage 1 Active — Limited Capacity
+                {t("hero.badge")}
               </span>
             </div>
 
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[1.1]">
-              Гарантированное
+              {t("hero.title1")}
               <br />
-              <span className="text-gradient-primary">Человеческое</span>
+              <span className="text-gradient-primary">{t("hero.title2")}</span>
               <br />
-              Внимание
+              {t("hero.title3")}
             </h1>
 
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Мы не продаём клики. Мы не продаём трафик.
+              {t("hero.subtitle1")}
               <br />
               <span className="text-foreground font-medium">
-                Мы продаём верифицированное внимание
+                {t("hero.subtitle2")}
               </span>{" "}
-              с криптографическим доказательством.
+              {t("hero.subtitle3")}
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
               <Button size="lg" className="btn-3d text-base px-8 h-14" asChild>
                 <Link to="/admin">
                   <LayoutDashboard className="w-5 h-5 mr-2" />
-                  Открыть Dashboard
+                  {t("hero.cta.dashboard")}
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </Link>
               </Button>
@@ -75,7 +76,7 @@ const Index = () => {
               >
                 <Link to="/docs">
                   <FileText className="w-5 h-5 mr-2" />
-                  Документация
+                  {t("hero.cta.docs")}
                 </Link>
               </Button>
             </div>
@@ -102,44 +103,43 @@ const Index = () => {
         <div className="container">
           <div className="text-center mb-16 animate-fade-in">
             <Badge className="mb-4 text-xs tracking-wider">
-              АРХИТЕКТУРА
+              {t("value.architecture")}
             </Badge>
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Построено для выживания
+              {t("value.title")}
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-              Каждый компонент работает даже при 0 Tier-1, 0 контрактов и 25
-              активных Tier-4 воркеров
+              {t("value.subtitle")}
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <ValueCard
               icon={Eye}
-              title="Продукт Внимание"
-              description="15–120 секунд верифицированного просмотра. Без кликов. Критерии выполнения определены для каждой задачи."
-              metrics={["4 уровня длительности", "92% завершений", "Multi-signal верификация"]}
+              title={t("value.attention.title")}
+              description={t("value.attention.desc")}
+              metrics={["4 levels", "92% completion", "Multi-signal"]}
               delay={0}
             />
             <ValueCard
               icon={Users}
-              title="Tier Система"
-              description="4 уровня воркеров. Рост через поведение, не активность. Лимиты дохода на каждом уровне."
-              metrics={["Trust Score основа", "Нет реферального дохода", "Только поведенческий рост"]}
+              title={t("value.tier.title")}
+              description={t("value.tier.desc")}
+              metrics={["Trust Score", "No referral income", "Behavior growth"]}
               delay={100}
             />
             <ValueCard
               icon={Shield}
-              title="Антифрод Движок"
-              description="Детекция ботов, блокировка скриптов, обнаружение ферм. Экономические атаки нерентабельны."
-              metrics={["12+ типов сигналов", "Авто-блокировка", "Цель: $0 потерь"]}
+              title={t("value.antifraud.title")}
+              description={t("value.antifraud.desc")}
+              metrics={["12+ signals", "Auto-block", "$0 loss target"]}
               delay={200}
             />
             <ValueCard
               icon={Globe}
-              title="GEO Гарантии"
-              description="Жёсткая и мягкая верификация. Confidence Score. SLA только после созревания системы."
-              metrics={["Confidence уровни", "Без IP-обещаний", "Прозрачная отчётность"]}
+              title={t("value.geo.title")}
+              description={t("value.geo.desc")}
+              metrics={["Confidence levels", "No IP promises", "Transparent"]}
               delay={300}
             />
           </div>
@@ -152,35 +152,32 @@ const Index = () => {
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-8 animate-fade-in">
               <Badge variant="outline" className="text-xs">
-                TRUST ARCHITECTURE
+                {t("trust.badge")}
               </Badge>
               <h2 className="text-4xl md:text-5xl font-bold">
-                Доверие нельзя
+                {t("trust.title1")}
                 <br />
-                <span className="text-primary">купить</span>
+                <span className="text-primary">{t("trust.title2")}</span>
               </h2>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Trust Score — нематериальный актив. Он зарабатывается
-                через последовательную, качественную доставку внимания.
-                Он падает при нарушениях. Он открывает доступ к
-                премиальным заданиям.
+                {t("trust.desc")}
               </p>
 
               <div className="space-y-4">
                 {[
                   {
-                    label: "Формирование",
-                    desc: "Completion rate + качество ответов + стабильность времени",
+                    label: t("trust.formation"),
+                    desc: t("trust.formation.desc"),
                     icon: TrendingUp,
                   },
                   {
-                    label: "Падение",
-                    desc: "Нарушения, попытки фрода, аномалии паттернов",
+                    label: t("trust.decrease"),
+                    desc: t("trust.decrease.desc"),
                     icon: Shield,
                   },
                   {
-                    label: "Доступ",
-                    desc: "Выше trust = лучше задачи = выше заработок",
+                    label: t("trust.access"),
+                    desc: t("trust.access.desc"),
                     icon: Lock,
                   },
                 ].map((item, i) => (
@@ -242,18 +239,18 @@ const Index = () => {
 
                 <div className="space-y-3 pt-6 border-t border-border">
                   <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Tier Access</span>
+                    <span className="text-muted-foreground">{t("trust.tier.access")}</span>
                     <Badge className="tier-badge-2">Tier 2</Badge>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Task Quality</span>
+                    <span className="text-muted-foreground">{t("trust.task.quality")}</span>
                     <span className="font-mono text-success font-semibold">
                       Premium
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Income Limit</span>
-                    <span className="font-mono font-semibold">$500/месяц</span>
+                    <span className="text-muted-foreground">{t("trust.income.limit")}</span>
+                    <span className="font-mono font-semibold">$500/mo</span>
                   </div>
                 </div>
               </div>
@@ -267,14 +264,13 @@ const Index = () => {
         <div className="container">
           <div className="text-center mb-16">
             <Badge variant="outline" className="mb-4 text-xs">
-              STAGE-BASED LAUNCH
+              {t("how.badge")}
             </Badge>
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Рост только когда доказан
+              {t("how.title")}
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-              Никаких обещаний пока supply не верифицирован. Никакого
-              масштабирования без резервов. Автоматический откат при деградации.
+              {t("how.subtitle")}
             </p>
           </div>
 
@@ -288,15 +284,14 @@ const Index = () => {
         <div className="container relative">
           <div className="max-w-3xl mx-auto text-center space-y-8">
             <h2 className="text-4xl md:text-5xl font-bold">
-              Готовы увидеть систему?
+              {t("cta.title")}
             </h2>
             <p className="text-lg text-muted-foreground">
-              Откройте админ панель для мониторинга Tier воркеров, Trust Score,
-              антифрод метрик и статуса резервов в реальном времени.
+              {t("cta.subtitle")}
             </p>
             <Button size="lg" className="btn-3d text-base px-10 h-14" asChild>
               <Link to="/admin">
-                Открыть Admin Dashboard
+                {t("cta.button")}
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Link>
             </Button>
@@ -319,12 +314,12 @@ const Index = () => {
             </div>
             <div className="flex items-center gap-6 text-sm text-muted-foreground">
               <Link to="/docs" className="hover:text-foreground transition-colors">
-                Documentation
+                {t("footer.docs")}
               </Link>
               <span>•</span>
-              <span>Verified Human Attention Protocol</span>
+              <span>{t("footer.protocol")}</span>
               <span>•</span>
-              <span>Stage 1 Active</span>
+              <span>{t("footer.stage")}</span>
             </div>
           </div>
         </div>

@@ -2,6 +2,7 @@ import { Navbar } from "@/components/Navbar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { useLanguage } from "@/contexts/LanguageContext";
 import {
   Users,
   Eye,
@@ -15,8 +16,6 @@ import {
   Zap,
   CheckCircle,
   Download,
-  Activity,
-  Globe,
   Server,
 } from "lucide-react";
 
@@ -42,15 +41,17 @@ const fraudMetrics = [
   { type: "velocity", label: "Velocity Abuse", blocked: 8, detected: 9, status: "healthy" },
 ];
 
-const stages = [
-  { id: 0, name: "Init", status: "complete", metrics: ["DB deployed", "Auth ready"] },
-  { id: 1, name: "Seed", status: "active", metrics: ["25 workers", "Basic tasks"] },
-  { id: 2, name: "Validate", status: "locked", metrics: ["Trust > 60", "Fraud < 1%"] },
-  { id: 3, name: "Scale", status: "locked", metrics: ["100+ workers", "Contracts"] },
-  { id: 4, name: "Mature", status: "locked", metrics: ["GEO verified", "Full SLA"] },
-];
-
 const Admin = () => {
+  const { t, language } = useLanguage();
+
+  const stages = [
+    { id: 0, name: "Init", status: "complete", metrics: ["DB deployed", "Auth ready"] },
+    { id: 1, name: "Seed", status: "active", metrics: ["25 workers", "Basic tasks"] },
+    { id: 2, name: "Validate", status: "locked", metrics: ["Trust > 60", "Fraud < 1%"] },
+    { id: 3, name: "Scale", status: "locked", metrics: ["100+ workers", language === "ru" ? "Контракты" : "Contracts"] },
+    { id: 4, name: "Mature", status: "locked", metrics: ["GEO verified", "Full SLA"] },
+  ];
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -60,25 +61,25 @@ const Admin = () => {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+              <h1 className="text-2xl font-bold">{t("admin.title")}</h1>
               <Badge className="bg-warning/10 text-warning border-warning/30">STAGE 1</Badge>
             </div>
             <p className="text-sm text-muted-foreground">
-              Мониторинг системы • Управление рисками • Финансовый контроль
+              {t("admin.subtitle")}
             </p>
           </div>
           <div className="flex gap-2">
             <Button variant="outline">
               <Download className="w-4 h-4 mr-2" />
-              Экспорт CSV
+              {t("admin.export.csv")}
             </Button>
             <Button variant="outline">
               <RefreshCw className="w-4 h-4 mr-2" />
-              Обновить
+              {t("admin.refresh")}
             </Button>
             <Button variant="outline">
               <Settings className="w-4 h-4 mr-2" />
-              Настройки
+              {t("admin.settings")}
             </Button>
           </div>
         </div>
@@ -88,11 +89,11 @@ const Admin = () => {
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <Server className="w-5 h-5 text-primary" />
-              <h2 className="font-semibold text-lg">System Stage</h2>
+              <h2 className="font-semibold text-lg">{t("admin.system.stage")}</h2>
             </div>
             <Badge variant="outline" className="text-warning">
               <Lock className="w-3 h-3 mr-1" />
-              AUTO-TRANSITION DISABLED
+              {t("admin.auto.transition")}
             </Badge>
           </div>
 
@@ -136,30 +137,30 @@ const Admin = () => {
           <div className="metric-card">
             <div className="flex items-center gap-2 mb-3">
               <Users className="w-5 h-5 text-primary" />
-              <span className="text-sm text-muted-foreground">Total Workers</span>
+              <span className="text-sm text-muted-foreground">{t("admin.total.workers")}</span>
             </div>
             <div className="text-3xl font-mono font-bold">28</div>
             <p className="text-xs text-muted-foreground mt-1">25 Tier-4, 3 Tier-3</p>
-            <Badge className="mt-2 text-success bg-success/10 border-success/30 text-xs">+3 на этой неделе</Badge>
+            <Badge className="mt-2 text-success bg-success/10 border-success/30 text-xs">+3 {t("admin.this.week")}</Badge>
           </div>
 
           <div className="metric-card">
             <div className="flex items-center gap-2 mb-3">
               <Eye className="w-5 h-5 text-accent" />
-              <span className="text-sm text-muted-foreground">Attention Units</span>
+              <span className="text-sm text-muted-foreground">{t("admin.attention.units")}</span>
             </div>
             <div className="text-3xl font-mono font-bold">2,710</div>
-            <p className="text-xs text-muted-foreground mt-1">Доступно сейчас</p>
+            <p className="text-xs text-muted-foreground mt-1">{t("admin.available.now")}</p>
           </div>
 
           <div className="metric-card">
             <div className="flex items-center gap-2 mb-3">
               <DollarSign className="w-5 h-5 text-success" />
-              <span className="text-sm text-muted-foreground">Revenue (24h)</span>
+              <span className="text-sm text-muted-foreground">{t("admin.revenue")}</span>
             </div>
             <div className="text-3xl font-mono font-bold text-success">$127</div>
-            <p className="text-xs text-muted-foreground mt-1">От 892 units</p>
-            <Badge className="mt-2 text-success bg-success/10 border-success/30 text-xs">+12% vs avg</Badge>
+            <p className="text-xs text-muted-foreground mt-1">{t("admin.from.units")}</p>
+            <Badge className="mt-2 text-success bg-success/10 border-success/30 text-xs">+12% {t("admin.vs.avg")}</Badge>
           </div>
 
           <div className="metric-card">
@@ -168,7 +169,7 @@ const Admin = () => {
               <span className="text-sm text-muted-foreground">Avg Trust Score</span>
             </div>
             <div className="text-3xl font-mono font-bold text-warning">52.3</div>
-            <p className="text-xs text-muted-foreground mt-1">Цель Stage 2: 60.0</p>
+            <p className="text-xs text-muted-foreground mt-1">{t("admin.target.stage")}: 60.0</p>
           </div>
         </div>
 
@@ -178,8 +179,8 @@ const Admin = () => {
             {/* Tier Distribution */}
             <div className="dashboard-panel">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="font-semibold text-lg">Worker Tier Distribution</h2>
-                <Badge variant="outline">28 всего</Badge>
+                <h2 className="font-semibold text-lg">{t("admin.tier.distribution")}</h2>
+                <Badge variant="outline">28 {t("advertiser.total")}</Badge>
               </div>
 
               <div className="space-y-4">
@@ -188,7 +189,7 @@ const Admin = () => {
                     <Badge className={`${tier.color} w-16 justify-center`}>Tier {tier.tier}</Badge>
                     <div className="flex-1">
                       <div className="flex justify-between text-sm mb-1">
-                        <span>{tier.count} workers ({tier.active} active)</span>
+                        <span>{tier.count} {t("admin.workers")} ({tier.active} {t("admin.active")})</span>
                         <span className="font-mono">{tier.incomeLimit}</span>
                       </div>
                       <Progress value={tier.count > 0 ? (tier.active / tier.count) * 100 : 0} className="h-2" />
@@ -205,8 +206,8 @@ const Admin = () => {
             {/* Attention Products */}
             <div className="dashboard-panel">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="font-semibold text-lg">Attention Products</h2>
-                <Badge className="bg-success/10 text-success border-success/30">IN STOCK</Badge>
+                <h2 className="font-semibold text-lg">{t("admin.attention.products")}</h2>
+                <Badge className="bg-success/10 text-success border-success/30">{t("admin.in.stock")}</Badge>
               </div>
 
               <div className="grid grid-cols-4 gap-4">
@@ -215,8 +216,8 @@ const Admin = () => {
                     <div className="text-2xl font-mono font-bold">{level.duration}s</div>
                     <div className="text-lg font-mono text-success mt-1">${level.price}</div>
                     <div className="mt-3 space-y-1 text-xs text-muted-foreground">
-                      <p>{level.completionRate}% completion</p>
-                      <p className="font-mono">{level.available.toLocaleString()} avail</p>
+                      <p>{level.completionRate}% {t("admin.completion")}</p>
+                      <p className="font-mono">{level.available.toLocaleString()} {t("admin.avail")}</p>
                     </div>
                   </div>
                 ))}
@@ -228,7 +229,7 @@ const Admin = () => {
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-2">
                   <Shield className="w-5 h-5 text-success" />
-                  <h2 className="font-semibold text-lg">Anti-Fraud Engine</h2>
+                  <h2 className="font-semibold text-lg">{t("admin.antifraud.engine")}</h2>
                 </div>
                 <Badge className="bg-success/10 text-success border-success/30">ACTIVE</Badge>
               </div>
@@ -246,7 +247,7 @@ const Admin = () => {
                     </div>
                     <div className="flex items-baseline gap-2">
                       <span className="text-2xl font-mono font-bold">{metric.blocked}</span>
-                      <span className="text-sm text-muted-foreground">/ {metric.detected} detected</span>
+                      <span className="text-sm text-muted-foreground">/ {metric.detected} {t("admin.detected")}</span>
                     </div>
                   </div>
                 ))}
@@ -255,15 +256,15 @@ const Admin = () => {
               <div className="flex gap-4 p-4 rounded-xl bg-secondary/50">
                 <div className="text-center flex-1">
                   <p className="text-2xl font-mono font-bold">70</p>
-                  <p className="text-xs text-muted-foreground">Auto-blocks today</p>
+                  <p className="text-xs text-muted-foreground">{t("admin.auto.blocks")}</p>
                 </div>
                 <div className="text-center flex-1">
                   <p className="text-2xl font-mono font-bold text-success">$234</p>
-                  <p className="text-xs text-muted-foreground">Economic loss prevented</p>
+                  <p className="text-xs text-muted-foreground">{t("admin.loss.prevented")}</p>
                 </div>
                 <div className="text-center flex-1">
                   <p className="text-2xl font-mono font-bold">0.8%</p>
-                  <p className="text-xs text-muted-foreground">Fraud rate</p>
+                  <p className="text-xs text-muted-foreground">{t("admin.fraud.rate")}</p>
                 </div>
               </div>
             </div>
@@ -273,7 +274,7 @@ const Admin = () => {
           <div className="space-y-6">
             {/* System Trust Score */}
             <div className="dashboard-panel">
-              <h2 className="font-semibold mb-4">System Trust Score</h2>
+              <h2 className="font-semibold mb-4">{t("admin.system.trust")}</h2>
               <div className="flex justify-center mb-4">
                 <div className="relative w-40 h-40">
                   <svg className="w-full h-full transform -rotate-90">
@@ -289,17 +290,17 @@ const Admin = () => {
                   </svg>
                   <div className="absolute inset-0 flex flex-col items-center justify-center">
                     <span className="text-4xl font-mono font-bold text-warning">52.3</span>
-                    <span className="text-xs text-muted-foreground">System Avg</span>
+                    <span className="text-xs text-muted-foreground">{t("admin.system.avg")}</span>
                   </div>
                 </div>
               </div>
               <div className="space-y-2 pt-4 border-t border-border">
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Min threshold</span>
+                  <span className="text-muted-foreground">{t("admin.min.threshold")}</span>
                   <span className="font-mono">40.0</span>
                 </div>
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Target (Stage 2)</span>
+                  <span className="text-muted-foreground">{t("admin.target")}</span>
                   <span className="font-mono text-primary">60.0</span>
                 </div>
               </div>
@@ -308,29 +309,29 @@ const Admin = () => {
             {/* Reserves */}
             <div className="dashboard-panel">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="font-semibold">Financial Reserves</h2>
-                <Badge className="bg-warning/10 text-warning border-warning/30">LOW</Badge>
+                <h2 className="font-semibold">{t("admin.reserves")}</h2>
+                <Badge className="bg-warning/10 text-warning border-warning/30">{t("admin.low")}</Badge>
               </div>
 
               <div className="space-y-4">
                 <div className="p-4 rounded-xl bg-secondary/50">
                   <div className="flex justify-between mb-2">
-                    <span className="text-sm">Stability Reserve</span>
+                    <span className="text-sm">{t("admin.stability.reserve")}</span>
                     <span className="font-mono text-sm">$4,200 / $5,000</span>
                   </div>
                   <Progress value={84} className="h-2" />
-                  <p className="text-xs text-warning mt-2">84% от минимума — рост заблокирован</p>
+                  <p className="text-xs text-warning mt-2">84% {t("admin.from.minimum")}</p>
                 </div>
 
                 <div className="p-4 rounded-xl bg-muted/50 border border-border">
                   <div className="flex justify-between mb-2">
-                    <span className="text-sm text-muted-foreground">Growth Reserve</span>
+                    <span className="text-sm text-muted-foreground">{t("admin.growth.reserve")}</span>
                     <span className="font-mono text-sm text-muted-foreground">$0 / $2,000</span>
                   </div>
                   <Progress value={0} className="h-2" />
                   <div className="flex items-center gap-1 mt-2">
                     <Lock className="w-3 h-3 text-muted-foreground" />
-                    <p className="text-xs text-muted-foreground">Заблокировано до Stage 2</p>
+                    <p className="text-xs text-muted-foreground">{t("admin.blocked.until")}</p>
                   </div>
                 </div>
               </div>
@@ -340,20 +341,20 @@ const Admin = () => {
             <div className="dashboard-panel border-destructive/20 bg-destructive/5">
               <div className="flex items-center gap-2 mb-4">
                 <AlertTriangle className="w-5 h-5 text-destructive" />
-                <h2 className="font-semibold">Risk Alerts</h2>
+                <h2 className="font-semibold">{t("admin.risk.alerts")}</h2>
               </div>
 
               <div className="space-y-3">
                 <div className="p-3 rounded-lg bg-card border border-border">
-                  <p className="text-sm font-medium text-destructive">Stability Reserve Low</p>
+                  <p className="text-sm font-medium text-destructive">{t("admin.reserve.low")}</p>
                   <p className="text-xs text-muted-foreground mt-1">
-                    84% от минимума. Операции роста заблокированы.
+                    {t("admin.reserve.low.desc")}
                   </p>
                 </div>
                 <div className="p-3 rounded-lg bg-card border border-border">
-                  <p className="text-sm font-medium text-warning">0 Tier-1 Workers</p>
+                  <p className="text-sm font-medium text-warning">{t("admin.no.tier1")}</p>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Premium Human продукт недоступен.
+                    {t("admin.no.tier1.desc")}
                   </p>
                 </div>
               </div>
@@ -361,27 +362,19 @@ const Admin = () => {
 
             {/* Quick Stats */}
             <div className="dashboard-panel">
-              <h2 className="font-semibold mb-4">Today's Activity</h2>
+              <h2 className="font-semibold mb-4">{t("admin.today.activity")}</h2>
               <div className="space-y-3 font-mono text-sm">
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Tasks completed</span>
+                  <span className="text-muted-foreground">{t("admin.tasks.completed")}</span>
                   <span className="text-success">892</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Tasks failed</span>
+                  <span className="text-muted-foreground">{t("admin.tasks.failed")}</span>
                   <span className="text-destructive">23</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Completion rate</span>
+                  <span className="text-muted-foreground">{t("admin.completion.rate")}</span>
                   <span>97.5%</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">Avg response time</span>
-                  <span>34s</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-muted-foreground">New registrations</span>
-                  <span className="text-primary">5</span>
                 </div>
               </div>
             </div>
