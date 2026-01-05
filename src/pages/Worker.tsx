@@ -2,6 +2,7 @@ import { Navbar } from "@/components/Navbar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { useLanguage } from "@/contexts/LanguageContext";
 import {
   Eye,
   Clock,
@@ -10,7 +11,6 @@ import {
   Award,
   Users,
   CheckCircle,
-  XCircle,
   Play,
   Gift,
   ChevronRight,
@@ -37,11 +37,11 @@ const tasks = [
 ];
 
 const activityHistory = [
-  { date: "Сегодня", completed: 12, failed: 0, earned: 2.15 },
-  { date: "Вчера", completed: 18, failed: 1, earned: 3.40 },
-  { date: "2 дня назад", completed: 15, failed: 0, earned: 2.80 },
-  { date: "3 дня назад", completed: 22, failed: 1, earned: 4.10 },
-  { date: "4 дня назад", completed: 14, failed: 0, earned: 2.50 },
+  { date: "today", completed: 12, failed: 0, earned: 2.15 },
+  { date: "yesterday", completed: 18, failed: 1, earned: 3.40 },
+  { date: "2", completed: 15, failed: 0, earned: 2.80 },
+  { date: "3", completed: 22, failed: 1, earned: 4.10 },
+  { date: "4", completed: 14, failed: 0, earned: 2.50 },
 ];
 
 const referrals = [
@@ -50,11 +50,19 @@ const referrals = [
 ];
 
 const Worker = () => {
+  const { t, language } = useLanguage();
+
   const tierColors = {
     1: "tier-badge-1",
     2: "tier-badge-2",
     3: "tier-badge-3",
     4: "tier-badge-4",
+  };
+
+  const getDateLabel = (date: string) => {
+    if (date === "today") return t("worker.today");
+    if (date === "yesterday") return t("worker.yesterday");
+    return `${date} ${t("worker.days.ago")}`;
   };
 
   return (
@@ -66,18 +74,18 @@ const Worker = () => {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-2xl font-bold">Worker Dashboard</h1>
+              <h1 className="text-2xl font-bold">{t("worker.title")}</h1>
               <Badge className={tierColors[workerData.tier as keyof typeof tierColors]}>
                 TIER {workerData.tier}
               </Badge>
             </div>
             <p className="text-sm text-muted-foreground">
-              Выполняйте задания • Повышайте Trust Score • Увеличивайте доход
+              {t("worker.subtitle")}
             </p>
           </div>
           <Button className="btn-3d">
             <Gift className="w-4 h-4 mr-2" />
-            Бонусное задание
+            {t("worker.bonus.task")}
           </Button>
         </div>
 
@@ -86,7 +94,7 @@ const Worker = () => {
           <div className="dashboard-panel">
             <div className="flex items-center gap-2 mb-2">
               <Award className="w-4 h-4 text-primary" />
-              <span className="text-xs text-muted-foreground uppercase">Trust Score</span>
+              <span className="text-xs text-muted-foreground uppercase">{t("worker.trust.score")}</span>
             </div>
             <div className="text-3xl font-mono font-bold text-success">{workerData.trustScore}</div>
             <Progress value={workerData.trustScore} className="h-1.5 mt-2" />
@@ -95,16 +103,16 @@ const Worker = () => {
           <div className="dashboard-panel">
             <div className="flex items-center gap-2 mb-2">
               <Users className="w-4 h-4 text-accent" />
-              <span className="text-xs text-muted-foreground uppercase">Referral Trust</span>
+              <span className="text-xs text-muted-foreground uppercase">{t("worker.referral.trust")}</span>
             </div>
             <div className="text-3xl font-mono font-bold">{workerData.referralTrust}</div>
-            <p className="text-xs text-muted-foreground mt-1">{referrals.length} приглашённых</p>
+            <p className="text-xs text-muted-foreground mt-1">{referrals.length} {t("worker.invited")}</p>
           </div>
 
           <div className="dashboard-panel">
             <div className="flex items-center gap-2 mb-2">
               <DollarSign className="w-4 h-4 text-success" />
-              <span className="text-xs text-muted-foreground uppercase">Баланс</span>
+              <span className="text-xs text-muted-foreground uppercase">{t("worker.balance")}</span>
             </div>
             <div className="text-3xl font-mono font-bold">${workerData.balance.usd.toFixed(2)}</div>
             <p className="text-xs text-muted-foreground mt-1">+ {workerData.balance.usdt} USDT</p>
@@ -113,7 +121,7 @@ const Worker = () => {
           <div className="dashboard-panel">
             <div className="flex items-center gap-2 mb-2">
               <TrendingUp className="w-4 h-4 text-warning" />
-              <span className="text-xs text-muted-foreground uppercase">Лимит дохода</span>
+              <span className="text-xs text-muted-foreground uppercase">{t("worker.income.limit")}</span>
             </div>
             <div className="text-3xl font-mono font-bold">${workerData.incomeLimit}</div>
             <Progress value={(workerData.earnedThisMonth / workerData.incomeLimit) * 100} className="h-1.5 mt-2" />
@@ -122,10 +130,10 @@ const Worker = () => {
           <div className="dashboard-panel">
             <div className="flex items-center gap-2 mb-2">
               <CheckCircle className="w-4 h-4 text-success" />
-              <span className="text-xs text-muted-foreground uppercase">Выполнено</span>
+              <span className="text-xs text-muted-foreground uppercase">{t("worker.completed")}</span>
             </div>
             <div className="text-3xl font-mono font-bold">{workerData.tasksCompleted}</div>
-            <p className="text-xs text-muted-foreground mt-1">{workerData.tasksFailed} провалено</p>
+            <p className="text-xs text-muted-foreground mt-1">{workerData.tasksFailed} {t("worker.failed")}</p>
           </div>
         </div>
 
@@ -135,8 +143,8 @@ const Worker = () => {
             {/* Available Tasks */}
             <div className="dashboard-panel">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="font-semibold text-lg">Доступные задания</h2>
-                <Badge variant="outline">{tasks.filter(t => t.status === "available").length} доступно</Badge>
+                <h2 className="font-semibold text-lg">{t("worker.available.tasks")}</h2>
+                <Badge variant="outline">{tasks.filter(t => t.status === "available").length} {t("worker.available")}</Badge>
               </div>
 
               <div className="space-y-4">
@@ -182,10 +190,10 @@ const Worker = () => {
                       {task.status === "available" ? (
                         <Button className="btn-3d">
                           <Play className="w-4 h-4 mr-2" />
-                          Принять
+                          {t("worker.accept")}
                         </Button>
                       ) : (
-                        <Badge variant="secondary">Требуется Tier 2</Badge>
+                        <Badge variant="secondary">{t("worker.requires.tier")}</Badge>
                       )}
                     </div>
                   </div>
@@ -200,14 +208,14 @@ const Worker = () => {
                   <CheckCircle className="w-5 h-5 text-accent" />
                 </div>
                 <div>
-                  <h3 className="font-semibold">Post-Attention Сигнал</h3>
-                  <p className="text-sm text-muted-foreground">Ответьте на вопрос после просмотра</p>
+                  <h3 className="font-semibold">{t("worker.post.attention")}</h3>
+                  <p className="text-sm text-muted-foreground">{t("worker.post.attention.desc")}</p>
                 </div>
               </div>
               <div className="p-4 rounded-lg bg-card border border-border">
-                <p className="font-medium mb-3">Какой главный продукт был показан в рекламе?</p>
+                <p className="font-medium mb-3">{t("worker.post.attention.question")}</p>
                 <div className="grid grid-cols-2 gap-2">
-                  {["Смартфон", "Ноутбук", "Наушники", "Часы"].map((option) => (
+                  {(language === "ru" ? ["Смартфон", "Ноутбук", "Наушники", "Часы"] : ["Smartphone", "Laptop", "Headphones", "Watch"]).map((option) => (
                     <Button key={option} variant="outline" className="justify-start">
                       {option}
                     </Button>
@@ -221,14 +229,14 @@ const Worker = () => {
           <div className="space-y-6">
             {/* Activity History */}
             <div className="dashboard-panel">
-              <h2 className="font-semibold mb-4">История активности</h2>
+              <h2 className="font-semibold mb-4">{t("worker.activity.history")}</h2>
               <div className="space-y-3">
                 {activityHistory.map((day, i) => (
                   <div key={i} className="flex items-center justify-between p-3 rounded-lg bg-secondary/50">
                     <div>
-                      <p className="text-sm font-medium">{day.date}</p>
+                      <p className="text-sm font-medium">{getDateLabel(day.date)}</p>
                       <p className="text-xs text-muted-foreground">
-                        <span className="text-success">{day.completed}</span> / <span className="text-destructive">{day.failed}</span> задач
+                        <span className="text-success">{day.completed}</span> / <span className="text-destructive">{day.failed}</span> {t("worker.tasks")}
                       </p>
                     </div>
                     <span className="font-mono text-success font-semibold">+${day.earned.toFixed(2)}</span>
@@ -240,7 +248,7 @@ const Worker = () => {
             {/* Referral Panel */}
             <div className="dashboard-panel">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="font-semibold">Реферальная панель</h2>
+                <h2 className="font-semibold">{t("worker.referral.panel")}</h2>
                 <Badge variant="outline">{referrals.length}/5</Badge>
               </div>
 
@@ -262,9 +270,9 @@ const Worker = () => {
               </div>
 
               <div className="p-3 rounded-lg bg-warning/10 border border-warning/20">
-                <p className="text-xs text-warning font-medium">⚠️ Нет денег за регистрацию</p>
+                <p className="text-xs text-warning font-medium">⚠️ {t("worker.no.money")}</p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  Только Referral Trust за качество рефералов
+                  {t("worker.only.rt")}
                 </p>
               </div>
             </div>
@@ -273,13 +281,13 @@ const Worker = () => {
             <div className="dashboard-panel border-success/30 bg-success/5">
               <div className="flex items-center gap-3 mb-3">
                 <Gift className="w-5 h-5 text-success" />
-                <h3 className="font-semibold">GEO Бонус</h3>
+                <h3 className="font-semibold">{t("worker.geo.bonus")}</h3>
               </div>
               <p className="text-sm text-muted-foreground mb-3">
-                Дополнительные задания для вашего региона
+                {t("worker.geo.bonus.desc")}
               </p>
               <Button variant="outline" className="w-full">
-                Проверить доступность
+                {t("worker.check.availability")}
                 <ChevronRight className="w-4 h-4 ml-2" />
               </Button>
             </div>

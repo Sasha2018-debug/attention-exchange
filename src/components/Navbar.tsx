@@ -2,16 +2,20 @@ import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Signal, LayoutDashboard, FileText, Users, Briefcase } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { ThemeSwitcher } from "@/components/ThemeSwitcher";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export function Navbar() {
   const location = useLocation();
+  const { t } = useLanguage();
 
   const navItems = [
-    { href: "/", label: "Overview", icon: Signal },
-    { href: "/worker", label: "Worker", icon: Users },
-    { href: "/advertiser", label: "Advertiser", icon: Briefcase },
-    { href: "/admin", label: "Admin", icon: LayoutDashboard },
-    { href: "/docs", label: "Docs", icon: FileText },
+    { href: "/", label: t("nav.overview"), icon: Signal },
+    { href: "/worker", label: t("nav.worker"), icon: Users },
+    { href: "/advertiser", label: t("nav.advertiser"), icon: Briefcase },
+    { href: "/admin", label: t("nav.admin"), icon: LayoutDashboard },
+    { href: "/docs", label: t("nav.docs"), icon: FileText },
   ];
 
   return (
@@ -50,12 +54,14 @@ export function Navbar() {
           </nav>
         </div>
 
-        <div className="flex items-center gap-3">
-          <div className="hidden sm:block live-indicator">
-            <span className="text-xs font-mono text-success">STAGE 1</span>
+        <div className="flex items-center gap-2">
+          <LanguageSwitcher />
+          <ThemeSwitcher />
+          <div className="hidden sm:block live-indicator ml-2">
+            <span className="text-xs font-mono text-success">{t("common.stage")} 1</span>
           </div>
-          <Button variant="default" size="sm" className="btn-3d">
-            Connect
+          <Button variant="default" size="sm" className="btn-3d ml-2">
+            {t("nav.connect")}
           </Button>
         </div>
       </div>
