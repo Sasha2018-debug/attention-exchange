@@ -7,10 +7,12 @@ export function LanguageSwitcher() {
 
   return (
     <Button
-      variant="ghost"
+      variant="outline"
       size="sm"
       onClick={() => setLanguage(language === "en" ? "ru" : "en")}
-      className="gap-2 font-mono text-xs"
+      className="gap-2 font-mono text-xs px-2.5"
+      aria-label="Switch language"
+      title={language === "en" ? "Switch to Russian" : "Switch to English"}
     >
       <Globe className="w-4 h-4" />
       {language.toUpperCase()}

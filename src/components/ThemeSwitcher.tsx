@@ -7,10 +7,12 @@ export function ThemeSwitcher() {
 
   return (
     <Button
-      variant="ghost"
-      size="sm"
+      variant="outline"
+      size="icon"
       onClick={toggleTheme}
-      className="w-9 h-9 p-0"
+      className="h-9 w-9"
+      aria-label="Toggle theme"
+      title={theme === "light" ? "Switch to dark" : "Switch to light"}
     >
       {theme === "light" ? (
         <Moon className="w-4 h-4" />
